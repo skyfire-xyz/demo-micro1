@@ -3,6 +3,7 @@ import { Metadata } from "next"
 
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
+import { Micro1Provider } from "@/lib/micro1/context"
 import SkyfireWidget from "@/lib/skyfire-sdk/components/skyfire-widget"
 import { SkyfireProvider } from "@/lib/skyfire-sdk/context/context"
 import { cn } from "@/lib/utils"
@@ -44,12 +45,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <SkyfireProvider>
-              <div className="relative flex min-h-screen flex-col">
-                <SiteHeader />
-                <SkyfireWidget />
-                <div className="flex-1">{children}</div>
-              </div>
-              <TailwindIndicator />
+              <Micro1Provider>
+                <div className="relative flex min-h-screen flex-col">
+                  <SiteHeader />
+                  <SkyfireWidget />
+                  <div className="flex-1">{children}</div>
+                </div>
+                <TailwindIndicator />
+              </Micro1Provider>
             </SkyfireProvider>
           </ThemeProvider>
         </body>
