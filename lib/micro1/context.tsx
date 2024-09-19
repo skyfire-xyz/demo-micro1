@@ -1,16 +1,11 @@
 "use client"
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
-import axios from "axios"
+import React, { createContext, useContext, useEffect, useState } from "react"
+
+import { formatDate } from "@/app/util"
 
 import { useSkyfireAPIClient } from "../skyfire-sdk/context/context"
-import { InterviewItem, InterviewReport } from "./type"
+import { CreateInterviewRequest, InterviewItem, InterviewReport } from "./type"
 
 interface Micro1ContextType {
   interviewList: InterviewItem[]
@@ -18,6 +13,7 @@ interface Micro1ContextType {
   loading: boolean
   error: string | null
   selectedComp: InterviewItem | null
+  createInterview: (interview: CreateInterviewRequest) => Promise<void>
 }
 
 const Micro1Context = createContext<Micro1ContextType | undefined>(undefined)
@@ -57,9 +53,34 @@ export const Micro1Provider: React.FC<{
         setLoading(false)
       }
     }
+
     fetchInterviews()
     fetchInterviewReports()
   }, [client])
+
+  const createInterview = async (interview: CreateInterviewRequest) => {
+    try {
+      if (!client) return
+      const response = await client.post("/proxy/micro1/interview", interview)
+
+      if (response.data) {
+        setInterviewList((prev) => [
+          {
+            ...interview,
+            interview_id: response.data.data.interview_id,
+            invite_url: response.data.data.invite_url,
+            date_created: formatDate(new Date()),
+            date_modified: null,
+            status: "active",
+            isNew: true,
+          },
+          ...interviewList,
+        ])
+      }
+    } catch (err) {
+      setError("Failed to create interview")
+    }
+  }
 
   return (
     <Micro1Context.Provider
@@ -69,6 +90,7 @@ export const Micro1Provider: React.FC<{
         error,
         selectedComp,
         reportList,
+        createInterview,
       }}
     >
       {children}
@@ -82,4 +104,14 @@ export const useMicro1 = () => {
     throw new Error("useMicro1 must be used within a Micro1Provider")
   }
   return context
+}
+
+export const useInterviews = () => {
+  const { interviewList } = useMicro1()
+  return interviewList
+}
+
+export const useReports = () => {
+  const { reportList } = useMicro1()
+  return reportList
 }

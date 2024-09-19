@@ -1,21 +1,27 @@
+import { LanguageCode } from "@/app/lang-code"
+
 export interface GetInterviewsResponse {
   status: boolean
   data: InterviewItem[]
 }
 
-export interface InterviewItem {
-  interview_id: string
+export interface CreateInterviewRequest {
   interview_name: string
-  invite_url: string
-  employer_email_id: string | null
+  employer_email_id: string
   skills: Skill[]
   custom_questions: string[]
-  interview_language: string
+  interview_language: LanguageCode
   can_change_interview_language: boolean
   only_coding_round: boolean
   is_coding_round_required: boolean
-  is_proctoring_required: boolean
   selected_coding_language: string
+  is_proctoring_required: boolean
+  isNew?: boolean
+}
+
+export interface InterviewItem extends CreateInterviewRequest {
+  interview_id: string
+  invite_url: string
   date_created: string
   date_modified: string | null
   status: string
@@ -24,19 +30,6 @@ export interface InterviewItem {
 export interface Skill {
   name: string
   description: string
-}
-
-export interface CreateInterviewRequest {
-  interview_name: string
-  employer_email_id: string
-  skills: Skill[]
-  custom_questions: string[]
-  interview_language: string
-  can_change_interview_language: boolean
-  only_coding_round: boolean
-  is_coding_round_required: boolean
-  selected_coding_language: string
-  is_proctoring_required: boolean
 }
 
 export interface CreateInterviewResponse {
@@ -84,6 +77,7 @@ export interface GetInterviewReportResponse {
 
 export interface InterviewReport {
   report_id: string
+  interview_name: string
   candidate_id: string
   candidate_name: string
   candidate_email_id: string
@@ -95,7 +89,7 @@ export interface InterviewReport {
   technical_skills_evaluation: Evaluation[]
   soft_skills_evaluation: Evaluation[]
   coding_skills_evaluation: Evaluation[] | null
-  custom_question_evaluation: Evaluation[]
+  custom_question_evaluation: CustomQuestionEvaluation[]
   date_created: string
   date_modified: string
   status: string
@@ -108,6 +102,11 @@ export interface InterviewTranscript {
 
 export interface Evaluation {
   skill: string
+  ai_evaluation: AiEvaluation
+}
+export interface CustomQuestionEvaluation {
+  answer_text: string
+  question_text: string
   ai_evaluation: AiEvaluation
 }
 
