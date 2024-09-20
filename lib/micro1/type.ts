@@ -25,6 +25,7 @@ export interface InterviewItem extends CreateInterviewRequest {
   date_created: string
   date_modified: string | null
   status: string
+  numberOfReports?: number
 }
 
 export interface Skill {
@@ -77,6 +78,7 @@ export interface GetInterviewReportResponse {
 
 export interface InterviewReport {
   report_id: string
+  interview_id: string
   interview_name: string
   candidate_id: string
   candidate_name: string

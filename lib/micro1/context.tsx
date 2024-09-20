@@ -1,6 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import { formatDate } from "@/app/util"
 
@@ -14,6 +15,10 @@ interface Micro1ContextType {
   error: string | null
   selectedComp: InterviewItem | null
   createInterview: (interview: CreateInterviewRequest) => Promise<void>
+  sendInvites: (
+    interviewId: string,
+    candidates: { name: string; email: string }[]
+  ) => Promise<void>
 }
 
 const Micro1Context = createContext<Micro1ContextType | undefined>(undefined)
@@ -28,17 +33,15 @@ export const Micro1Provider: React.FC<{
   const [selectedComp, setSelectedComp] = useState<InterviewItem | null>(null)
   const [reportList, setReportList] = useState<InterviewReport[]>([])
 
-  //`/proxy/pricing-culture/api/data/dailycomps`
   useEffect(() => {
     if (!client) return
     const fetchInterviews = async () => {
       try {
         const response = await client.get("/proxy/micro1/interviews")
-
         setInterviewList(response.data.data)
         setLoading(false)
       } catch (err) {
-        setError("Failed to fetch market comps")
+        setError("Failed to fetch interviews")
         setLoading(false)
       }
     }
@@ -46,16 +49,33 @@ export const Micro1Provider: React.FC<{
     const fetchInterviewReports = async () => {
       try {
         const response = await client.get(`/proxy/micro1/interview/reports`)
-        setReportList(response.data.data)
+        const reports = response.data.data
+        setReportList(reports)
+
+        // Update interviewList with numberOfReports
+        setInterviewList((prevInterviews) => {
+          const reportCounts = reports.reduce(
+            (acc: { [key: string]: number }, report: InterviewReport) => {
+              acc[report.interview_id] = (acc[report.interview_id] || 0) + 1
+              return acc
+            },
+            {}
+          )
+
+          return prevInterviews.map((interview) => ({
+            ...interview,
+            numberOfReports: reportCounts[interview.interview_id] || 0,
+          }))
+        })
+
         setLoading(false)
       } catch (err) {
-        setError("Failed to fetch market comps")
+        setError("Failed to fetch interview reports")
         setLoading(false)
       }
     }
 
-    fetchInterviews()
-    fetchInterviewReports()
+    fetchInterviews().then(() => fetchInterviewReports())
   }, [client])
 
   const createInterview = async (interview: CreateInterviewRequest) => {
@@ -64,6 +84,7 @@ export const Micro1Provider: React.FC<{
       const response = await client.post("/proxy/micro1/interview", interview)
 
       if (response.data) {
+        toast(`You have successfully create a new interview`)
         setInterviewList((prev) => [
           {
             ...interview,
@@ -73,12 +94,33 @@ export const Micro1Provider: React.FC<{
             date_modified: null,
             status: "active",
             isNew: true,
+            numberOfReports: 0,
           },
-          ...interviewList,
+          ...prev,
         ])
       }
     } catch (err) {
       setError("Failed to create interview")
+    }
+  }
+
+  const sendInvites = async (
+    interviewId: string,
+    candidates: { name: string; email: string }[]
+  ) => {
+    try {
+      if (!client) return
+      const response = await client.post("/proxy/micro1/interview/invite", {
+        interview_id: interviewId,
+        candidates: candidates,
+      })
+
+      if (response.data) {
+        // You might want to update the state or perform some action after successful invite
+        toast("You have successfully sent the invites")
+      }
+    } catch (err) {
+      setError("Failed to send invites")
     }
   }
 
@@ -91,6 +133,7 @@ export const Micro1Provider: React.FC<{
         selectedComp,
         reportList,
         createInterview,
+        sendInvites,
       }}
     >
       {children}

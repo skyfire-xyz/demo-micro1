@@ -18,8 +18,8 @@ import {
   updateSkyfireClaims,
   updateSkyfireWallet,
 } from "@/lib/skyfire-sdk/context/action"
-import { toast } from "@/hooks/use-toast"
 
+import { toast } from "../shadcn/hooks/use-toast"
 import {
   getApiKeyFromLocalStorage,
   removeApiKeyFromLocalStorage,
@@ -77,7 +77,7 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
                 title: `Spent ${usdAmount(
                   response.headers["skyfire-payment-amount"]
                 )}`,
-                duration: 2000,
+                duration: 200000,
               })
             }
           }
