@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import { formatDate } from "@/app/util"
 
 import { useSkyfireAPIClient } from "../skyfire-sdk/context/context"
+import dummyReports from "./dummy_reports.json"
 import { CreateInterviewRequest, InterviewItem, InterviewReport } from "./type"
 
 interface Micro1ContextType {
@@ -48,8 +49,13 @@ export const Micro1Provider: React.FC<{
 
     const fetchInterviewReports = async () => {
       try {
+        // Fetch real reports
         const response = await client.get(`/proxy/micro1/interview/reports`)
-        const reports = response.data.data
+        let reports = response.data.data
+
+        // Add dummy reports
+        reports = [...reports, ...dummyReports]
+
         setReportList(reports)
 
         // Update interviewList with numberOfReports

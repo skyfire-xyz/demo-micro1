@@ -1,0 +1,640 @@
+[
+    {
+      "report_id": "rep1",
+      "interview_id": "cbd0858f-f3a8-4f71-bf83-d8bd6b3673d0",
+      "interview_name": "Random Interview 10002",
+      "candidate_id": "cand1",
+      "candidate_name": "John Smith",
+      "candidate_email_id": "john.smith@example.com",
+      "report_date": "2024-09-20 15:30:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep1.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep1.webm",
+      "proctoring_score": 85,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "Hello! Could you briefly introduce yourself?"
+        },
+        {
+          "role": "user",
+          "content": "Hi, I'm John Smith, and I have over 8 years of experience as a firefighter."
+        },
+        {
+          "role": "interviewer",
+          "content": "Great to meet you, John. How do you handle high-pressure situations during emergencies?"
+        },
+        {
+          "role": "user",
+          "content": "I stay calm, assess the situation quickly, and rely on my training to make informed decisions."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "John demonstrated strong knowledge and experience in firefighting, with excellent crisis management skills.",
+            "rating": "Highly Experienced"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "John communicated effectively and showed strong leadership qualities.",
+            "rating": "Excellent"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Are you willing to relocate?",
+          "answer_text": "Yes, I am open to relocating for the right opportunity.",
+          "ai_evaluation": {
+            "rating": "Good",
+            "feedback": "Candidate is flexible and open to relocation, which is a positive sign."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 15:30:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep2",
+      "interview_id": "615345b3-dae0-4cff-aed2-f91ad327713b",
+      "interview_name": "Random Interview 10001",
+      "candidate_id": "cand2",
+      "candidate_name": "Emily Johnson",
+      "candidate_email_id": "emily.johnson@example.com",
+      "report_date": "2024-09-20 15:35:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep2.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep2.webm",
+      "proctoring_score": 90,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "Hello! Could you briefly introduce yourself?"
+        },
+        {
+          "role": "user",
+          "content": "Hello, I'm Emily Johnson, with 5 years of experience in firefighting."
+        },
+        {
+          "role": "interviewer",
+          "content": "Nice to meet you, Emily. Can you describe a challenging situation you faced and how you handled it?"
+        },
+        {
+          "role": "user",
+          "content": "I once led a team during a forest fire, where we had to evacuate nearby residents efficiently and safely."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Emily showcased excellent firefighting skills and leadership in challenging situations.",
+            "rating": "Experienced"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Emily communicated clearly and demonstrated strong teamwork abilities.",
+            "rating": "Above Average"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Are you willing to relocate?",
+          "answer_text": "I am willing to consider relocation depending on the location.",
+          "ai_evaluation": {
+            "rating": "Average",
+            "feedback": "Candidate is somewhat open to relocation but may have preferences."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 15:35:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep3",
+      "interview_id": "208f52e1-0a6c-4fc5-b76e-6e0264bdf3ce",
+      "interview_name": "Random Interview 10000",
+      "candidate_id": "cand3",
+      "candidate_name": "Michael Brown",
+      "candidate_email_id": "michael.brown@example.com",
+      "report_date": "2024-09-20 15:40:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep3.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep3.webm",
+      "proctoring_score": 80,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "¡Hola! ¿Podrías presentarte brevemente?"
+        },
+        {
+          "role": "user",
+          "content": "Hola, soy Michael Brown, y tengo 6 años de experiencia como bombero."
+        },
+        {
+          "role": "interviewer",
+          "content": "Excelente, Michael. ¿Cómo manejas situaciones de alto estrés en tu trabajo?"
+        },
+        {
+          "role": "user",
+          "content": "Me enfoco en mantener la calma y seguir los protocolos establecidos para asegurar la seguridad de todos."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Michael demostró un buen conocimiento en técnicas de extinción de incendios y manejo de situaciones de estrés.",
+            "rating": "Experimentado"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Michael se comunicó efectivamente en español y mostró habilidades sólidas de trabajo en equipo.",
+            "rating": "Bueno"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "¿Estás dispuesto a reubicarse?",
+          "answer_text": "Sí, estoy abierto a reubicarme si es necesario.",
+          "ai_evaluation": {
+            "rating": "Bueno",
+            "feedback": "El candidato está dispuesto a reubicarse, lo cual es positivo."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 15:40:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep4",
+      "interview_id": "01dddfa3-13a6-478a-b921-e811bdd730f7",
+      "interview_name": "Random Interview",
+      "candidate_id": "cand4",
+      "candidate_name": "Sophie Müller",
+      "candidate_email_id": "sophie.muller@example.com",
+      "report_date": "2024-09-20 15:45:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep4.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep4.webm",
+      "proctoring_score": 92,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "Bonjour! Pouvez-vous vous présenter brièvement?"
+        },
+        {
+          "role": "user",
+          "content": "Bonjour, je suis Sophie Müller, j'ai 7 ans d'expérience en tant que pompier."
+        },
+        {
+          "role": "interviewer",
+          "content": "Ravi de vous rencontrer, Sophie. Comment gérez-vous les situations d'urgence?"
+        },
+        {
+          "role": "user",
+          "content": "Je reste calme, j'évalue rapidement la situation et j'agis en conséquence pour assurer la sécurité."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Sophie a démontré une excellente compréhension des procédures d'urgence et des compétences techniques solides.",
+            "rating": "Très Expérimenté"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Sophie a communiqué efficacement et a montré une grande capacité à travailler sous pression.",
+            "rating": "Excellent"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Êtes-vous prêt à vous relocaliser?",
+          "answer_text": "Oui, je suis ouvert à la relocalisation.",
+          "ai_evaluation": {
+            "rating": "Bon",
+            "feedback": "Le candidat est flexible concernant la relocalisation."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 15:45:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep5",
+      "interview_id": "aa916258-cdbf-459b-af6f-bcc1e6cbaf8b",
+      "interview_name": "Random Interview",
+      "candidate_id": "cand5",
+      "candidate_name": "Liam Wang",
+      "candidate_email_id": "liam.wang@example.com",
+      "report_date": "2024-09-20 15:50:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep5.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep5.webm",
+      "proctoring_score": 78,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "Hello! Could you briefly introduce yourself?"
+        },
+        {
+          "role": "user",
+          "content": "Hi, I'm Liam Wang, with 4 years of experience as a firefighter."
+        },
+        {
+          "role": "interviewer",
+          "content": "Great, Liam. How do you approach teamwork during emergency situations?"
+        },
+        {
+          "role": "user",
+          "content": "I believe clear communication and trust are key to effective teamwork during emergencies."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Liam has solid technical skills and understands the importance of teamwork.",
+            "rating": "Experienced"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Liam communicated well and showed good interpersonal skills.",
+            "rating": "Above Average"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Relocate",
+          "answer_text": "Yes, I'm willing to relocate if needed.",
+          "ai_evaluation": {
+            "rating": "Good",
+            "feedback": "Candidate is open to relocation."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 15:50:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep6",
+      "interview_id": "cb552d5e-d8cf-4a87-bb06-73d02e645d7d",
+      "interview_name": "Firefighter",
+      "candidate_id": "cand6",
+      "candidate_name": "Olivia Davis",
+      "candidate_email_id": "olivia.davis@example.com",
+      "report_date": "2024-09-20 15:55:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep6.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep6.webm",
+      "proctoring_score": 88,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "¡Hola! ¿Podrías presentarte brevemente?"
+        },
+        {
+          "role": "user",
+          "content": "Hola, soy Olivia Davis, tengo 5 años de experiencia como bombera."
+        },
+        {
+          "role": "interviewer",
+          "content": "¿Estás dispuesta a reubicarse?"
+        },
+        {
+          "role": "user",
+          "content": "Sí, estoy abierta a oportunidades en diferentes lugares."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Olivia demostró habilidades técnicas sólidas y experiencia relevante.",
+            "rating": "Experimentado"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Comunicó efectivamente y mostró disposición para adaptarse.",
+            "rating": "Bueno"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Are you willing to relocate",
+          "answer_text": "Yes, I am open to relocating.",
+          "ai_evaluation": {
+            "rating": "Good",
+            "feedback": "Candidate is willing to relocate."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 15:55:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep7",
+      "interview_id": "68f6b59a-1f93-45b9-9a29-5dd02fac0a87",
+      "interview_name": "Firefighter",
+      "candidate_id": "cand7",
+      "candidate_name": "Noah Wilson",
+      "candidate_email_id": "noah.wilson@example.com",
+      "report_date": "2024-09-20 16:00:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep7.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep7.webm",
+      "proctoring_score": 82,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "Hello! Could you briefly introduce yourself?"
+        },
+        {
+          "role": "user",
+          "content": "Hi, I'm Noah Wilson, a firefighter with 3 years of experience."
+        },
+        {
+          "role": "interviewer",
+          "content": "How do you handle stress during emergency operations?"
+        },
+        {
+          "role": "user",
+          "content": "I focus on the task at hand and rely on my training to guide me."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Noah has fundamental firefighting skills and shows potential for growth.",
+            "rating": "Competent"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Communicated clearly but could provide more detailed answers.",
+            "rating": "Average"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Are you willing to relocate",
+          "answer_text": "I'm open to relocation opportunities.",
+          "ai_evaluation": {
+            "rating": "Good",
+            "feedback": "Candidate is flexible regarding relocation."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 16:00:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+    {
+      "report_id": "rep8",
+      "interview_id": "82de1524-6cf6-4745-9646-535dbdaec694",
+      "interview_name": "Firefighter",
+      "candidate_id": "cand8",
+      "candidate_name": "Emma Thompson",
+      "candidate_email_id": "emma.thompson@example.com",
+      "report_date": "2024-09-20 16:05:00",
+      "report_url": "https://reports.micro1.ai/interview-report/rep8.pdf",
+      "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep8.webm",
+      "proctoring_score": 95,
+      "interview_transcript": [
+        {
+          "role": "interviewer",
+          "content": "Hello! Could you briefly introduce yourself?"
+        },
+        {
+          "role": "user",
+          "content": "Hello, I'm Emma Thompson, with 10 years of experience in firefighting."
+        },
+        {
+          "role": "interviewer",
+          "content": "What motivates you in your firefighting career?"
+        },
+        {
+          "role": "user",
+          "content": "Making a difference in people's lives and ensuring community safety."
+        }
+      ],
+      "technical_skills_evaluation": [
+        {
+          "skill": "Firefighter",
+          "ai_evaluation": {
+            "feedback": "Emma has extensive experience and advanced technical skills.",
+            "rating": "Highly Experienced"
+          }
+        }
+      ],
+      "soft_skills_evaluation": [
+        {
+          "skill": "Overall",
+          "ai_evaluation": {
+            "feedback": "Exceptional communication and leadership abilities.",
+            "rating": "Excellent"
+          }
+        }
+      ],
+      "coding_skills_evaluation": null,
+      "custom_question_evaluation": [
+        {
+          "question_text": "Are you willing to relocate?",
+          "answer_text": "Yes, relocation is something I'm comfortable with.",
+          "ai_evaluation": {
+            "rating": "Excellent",
+            "feedback": "Candidate is highly flexible and enthusiastic about relocation."
+          }
+        }
+      ],
+      "date_created": "2024-09-20 16:05:00",
+      "date_modified": null,
+      "status": "active",
+      "dummy": true
+    },
+  {
+    "report_id": "rep9",
+    "interview_id": "4968945e-5bc5-4efb-975f-3a793f8010f8",
+    "interview_name": "Firefighter Interview",
+    "candidate_id": "cand9",
+    "candidate_name": "Isabella Garcia",
+    "candidate_email_id": "isabella.garcia@example.com",
+    "report_date": "2024-09-20 16:10:00",
+    "report_url": "https://reports.micro1.ai/interview-report/rep9.pdf",
+    "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep9.webm",
+    "proctoring_score": 87,
+    "interview_transcript": [
+      {
+        "role": "interviewer",
+        "content": "Hello! Could you briefly introduce yourself?"
+      },
+      {
+        "role": "user",
+        "content": "Hi, I'm Isabella Garcia, and I've been a firefighter for 6 years."
+      },
+      {
+        "role": "interviewer",
+        "content": "Can you share an experience where you had to make a quick decision under pressure?"
+      },
+      {
+        "role": "user",
+        "content": "During a building fire, I had to quickly decide the best evacuation route for trapped individuals."
+      }
+    ],
+    "technical_skills_evaluation": [
+      {
+        "skill": "Firefighter",
+        "ai_evaluation": {
+          "feedback": "Isabella demonstrated strong decision-making skills and technical knowledge.",
+          "rating": "Experienced"
+        }
+      }
+    ],
+    "soft_skills_evaluation": [
+      {
+        "skill": "Overall",
+        "ai_evaluation": {
+          "feedback": "Communicated confidently and showed leadership qualities.",
+          "rating": "Above Average"
+        }
+      }
+    ],
+    "coding_skills_evaluation": null,
+    "custom_question_evaluation": [
+      {
+        "question_text": "Are you willing to relocate?",
+        "answer_text": "Yes, I'm open to relocating for the job.",
+        "ai_evaluation": {
+          "rating": "Good",
+          "feedback": "Candidate is willing to relocate, which is beneficial."
+        }
+      }
+    ],
+    "date_created": "2024-09-20 16:10:00",
+    "date_modified": null,
+    "status": "active",
+    "dummy": true
+  },
+  {
+    "report_id": "rep15",
+    "interview_id": "e1b3faf7-28e5-4299-9bce-3aa61c82fc88",
+    "interview_name": "QA Engineer 1",
+    "candidate_id": "cand15",
+    "candidate_name": "David Kim",
+    "candidate_email_id": "david.kim@example.com",
+    "report_date": "2024-09-20 16:45:00",
+    "report_url": "https://reports.micro1.ai/interview-report/rep15.pdf",
+    "interview_recording_url": "https://micro1-interview-data.s3.us-west-1.amazonaws.com/interview-recordings/rep15.webm",
+    "proctoring_score": 89,
+    "interview_transcript": [
+      {
+        "role": "interviewer",
+        "content": "Hello! Could you briefly introduce yourself?"
+      },
+      {
+        "role": "user",
+        "content": "Hi, I'm David Kim, a QA Engineer with 5 years of experience."
+      },
+      {
+        "role": "interviewer",
+        "content": "Can you explain how you would use React Context API in a project?"
+      },
+      {
+        "role": "user",
+        "content": "Sure, React Context API allows for global state management without prop drilling."
+      }
+    ],
+    "technical_skills_evaluation": [
+      {
+        "skill": "React",
+        "ai_evaluation": {
+          "feedback": "David has a solid understanding of React and its advanced features.",
+          "rating": "Experienced"
+        }
+      }
+    ],
+    "soft_skills_evaluation": [
+      {
+        "skill": "Overall",
+        "ai_evaluation": {
+          "feedback": "Communicated technical concepts clearly and effectively.",
+          "rating": "Good"
+        }
+      }
+    ],
+    "coding_skills_evaluation": [
+      {
+        "language": "JavaScript",
+        "ai_evaluation": {
+          "feedback": "Wrote efficient and clean code to solve the given problems.",
+          "rating": "Excellent"
+        }
+      }
+    ],
+    "custom_question_evaluation": [
+      {
+        "question_text": "Are you willing to relocate?",
+        "answer_text": "Yes, I'm open to relocation.",
+        "ai_evaluation": {
+          "rating": "Good",
+          "feedback": "Candidate is flexible regarding relocation."
+        }
+      }
+    ],
+    "date_created": "2024-09-20 16:45:00",
+    "date_modified": null,
+    "status": "active",
+    "dummy": true
+  }
+]

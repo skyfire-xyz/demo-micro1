@@ -17,6 +17,8 @@ Note: Need to fix toasters import path.
 
 ## Code changes
 
+Update next.config.mjs
+
 ```
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -36,4 +38,12 @@ const nextConfig = {
 }
 
 export default nextConfig
+```
+
+Update tailwind.config to include lib folder
+
+```
+...
+content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
+...
 ```

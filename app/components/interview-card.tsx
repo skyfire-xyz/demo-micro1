@@ -1,5 +1,15 @@
 import { useMemo, useState } from "react"
-import { Code, ExternalLink, Eye, Globe, Plus, User, X } from "lucide-react"
+import {
+  ChevronLeft,
+  ChevronRight,
+  Code,
+  ExternalLink,
+  Eye,
+  Globe,
+  Plus,
+  User,
+  X,
+} from "lucide-react"
 
 import { useMicro1, useReports } from "@/lib/micro1/context"
 import { InterviewItem, InterviewReport } from "@/lib/micro1/type"
@@ -34,6 +44,12 @@ import {
 import { languageCodesMap } from "../lang-code"
 import InterviewReportCard from "./interview-report"
 
+const CANDIDATES_PER_PAGE = 5
+
+interface InterviewCardProps extends InterviewItem {
+  hideDummy?: boolean
+}
+
 export default function InterviewCard({
   interview_name,
   invite_url,
@@ -43,7 +59,8 @@ export default function InterviewCard({
   is_coding_round_required,
   date_created,
   interview_id,
-}: InterviewItem) {
+  hideDummy,
+}: InterviewCardProps) {
   const reports = useReports()
   const { sendInvites } = useMicro1()
   const [selectedCandidate, setSelectedCandidate] =
@@ -53,10 +70,22 @@ export default function InterviewCard({
     { name: string; email: string }[]
   >([])
   const [newCandidate, setNewCandidate] = useState({ name: "", email: "" })
+  const [currentPage, setCurrentPage] = useState(1)
 
   const reportCandidates = useMemo(() => {
-    return reports.filter((report) => report.interview_id === interview_id)
-  }, [reports, interview_id])
+    return reports.filter((report) => {
+      const interviewMatch = report.interview_id === interview_id
+      const dummyMatch = hideDummy ? !report.dummy : true
+      return interviewMatch && dummyMatch
+    })
+  }, [reports, interview_id, hideDummy])
+
+  const paginatedCandidates = useMemo(() => {
+    const startIndex = (currentPage - 1) * CANDIDATES_PER_PAGE
+    return reportCandidates.slice(startIndex, startIndex + CANDIDATES_PER_PAGE)
+  }, [reportCandidates, currentPage])
+
+  const totalPages = Math.ceil(reportCandidates.length / CANDIDATES_PER_PAGE)
 
   const fullLanguageName =
     languageCodesMap[interview_language] || interview_language
@@ -80,6 +109,14 @@ export default function InterviewCard({
 
   const handleTestInterview = () => {
     window.open(invite_url, "_blank", "noopener,noreferrer")
+  }
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1))
+  }
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
   }
 
   return (
@@ -132,63 +169,92 @@ export default function InterviewCard({
         </p>
 
         {reportCandidates.length > 0 && (
-          <div className="mb-4 overflow-x-auto">
-            <h3 className="text-sm font-medium mb-2">Candidate Summaries:</h3>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  {reportCandidates[0].technical_skills_evaluation.map(
-                    (skill, index) => (
-                      <TableHead key={index}>{skill.skill}</TableHead>
-                    )
-                  )}
-                  <TableHead>Soft Skills</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {reportCandidates.map((candidate, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{candidate.candidate_name}</TableCell>
-                    {candidate.technical_skills_evaluation.map(
-                      (skill, skillIndex) => (
-                        <TableCell key={skillIndex}>
-                          {skill.ai_evaluation.rating}
-                        </TableCell>
+          <Card className="mb-4 overflow-x-auto mt-4">
+            <CardHeader>
+              <h3 className="text-sm font-medium mb-2">Available Reports</h3>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Soft Skills</TableHead>
+                    {reportCandidates[0].technical_skills_evaluation.map(
+                      (skill, index) => (
+                        <TableHead key={index}>Skill: {skill.skill}</TableHead>
                       )
                     )}
-                    <TableCell>
-                      {candidate.soft_skills_evaluation[0].ai_evaluation.rating}
-                    </TableCell>
-                    <TableCell>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setSelectedCandidate(candidate)}
-                          >
-                            View Details
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                          <DialogHeader>
-                            <DialogTitle>
-                              {candidate.candidate_name} - Detailed Report
-                            </DialogTitle>
-                          </DialogHeader>
-                          {selectedCandidate && (
-                            <InterviewReportCard report={selectedCandidate} />
-                          )}
-                        </DialogContent>
-                      </Dialog>
-                    </TableCell>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {paginatedCandidates.map((candidate, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{candidate.candidate_name}</TableCell>
+                      <TableCell>
+                        {
+                          candidate.soft_skills_evaluation[0].ai_evaluation
+                            .rating
+                        }
+                      </TableCell>
+                      {candidate.technical_skills_evaluation.map(
+                        (skill, skillIndex) => (
+                          <TableCell key={skillIndex}>
+                            {skill.ai_evaluation.rating}
+                          </TableCell>
+                        )
+                      )}
+                      <TableCell>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setSelectedCandidate(candidate)}
+                            >
+                              View Details
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle>
+                                {candidate.candidate_name} - Detailed Report
+                              </DialogTitle>
+                            </DialogHeader>
+                            {selectedCandidate && (
+                              <InterviewReportCard report={selectedCandidate} />
+                            )}
+                          </DialogContent>
+                        </Dialog>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              {totalPages > 1 && (
+                <div className="flex items-center justify-end space-x-2 py-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         )}
       </CardContent>
       <CardFooter className="flex justify-between gap-2 bg-background/80 backdrop-blur-sm">

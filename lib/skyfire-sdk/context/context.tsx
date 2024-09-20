@@ -77,7 +77,7 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
                 title: `Spent ${usdAmount(
                   response.headers["skyfire-payment-amount"]
                 )}`,
-                duration: 200000,
+                duration: 2000,
               })
             }
           }

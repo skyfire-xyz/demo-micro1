@@ -24,6 +24,7 @@ const ITEMS_PER_PAGE = 6
 
 export default function InterviewGrid() {
   const interviews = useInterviews()
+  const [hideDummy, setHideDummy] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -137,12 +138,26 @@ export default function InterviewGrid() {
                 Has reports
               </Label>
             </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="hideDummy"
+                checked={hideDummy}
+                onCheckedChange={(checked) => setHideDummy(checked as boolean)}
+              />
+              <Label htmlFor="hideDummy" className="text-sm">
+                Hide dummy reports
+              </Label>
+            </div>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {currentInterviews.map((interview) => (
-          <InterviewCard key={interview.interview_id} {...interview} />
+          <InterviewCard
+            hideDummy={hideDummy}
+            key={interview.interview_id}
+            {...interview}
+          />
         ))}
       </div>
       <div className="flex justify-between items-center mt-6">

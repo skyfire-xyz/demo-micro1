@@ -95,6 +95,7 @@ export interface InterviewReport {
   date_created: string
   date_modified: string
   status: string
+  dummy?: boolean
 }
 
 export interface InterviewTranscript {

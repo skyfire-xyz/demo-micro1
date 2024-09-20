@@ -19,6 +19,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface InterviewReportCardProps {
   report: InterviewReport
@@ -27,6 +33,8 @@ interface InterviewReportCardProps {
 export default function InterviewReportCard({
   report,
 }: InterviewReportCardProps) {
+  const isDummy = report.dummy === true
+
   return (
     <Card className="mb-6">
       <CardHeader>
@@ -109,20 +117,38 @@ export default function InterviewReportCard({
         </Accordion>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" asChild>
-          <a href={report.report_url} target="_blank" rel="noopener noreferrer">
-            <Download className="mr-2 h-4 w-4" /> Download Report
-          </a>
-        </Button>
-        <Button variant="outline" asChild>
-          <a
-            href={report.interview_recording_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Play className="mr-2 h-4 w-4" /> View Recording
-          </a>
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <Button variant="outline" disabled={isDummy}>
+                  <Download className="mr-2 h-4 w-4" /> Download Report
+                </Button>
+              </span>
+            </TooltipTrigger>
+            {isDummy && (
+              <TooltipContent>
+                <p>Download not available for dummy reports</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <Button variant="outline" disabled={isDummy}>
+                  <Play className="mr-2 h-4 w-4" /> View Recording
+                </Button>
+              </span>
+            </TooltipTrigger>
+            {isDummy && (
+              <TooltipContent>
+                <p>Recording not available for dummy reports</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
       </CardFooter>
     </Card>
   )
