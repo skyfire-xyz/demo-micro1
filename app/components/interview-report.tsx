@@ -123,7 +123,13 @@ export default function InterviewReportCard({
           <Tooltip>
             <TooltipTrigger asChild>
               <span>
-                <Button variant="outline" disabled={isDummy}>
+                <Button
+                  onClick={() => {
+                    window.open(report.report_url)
+                  }}
+                  variant="outline"
+                  disabled={isDummy}
+                >
                   <Download className="mr-2 h-4 w-4" /> Download Report
                 </Button>
               </span>
@@ -139,7 +145,13 @@ export default function InterviewReportCard({
           <Tooltip>
             <TooltipTrigger asChild>
               <span>
-                <Button variant="outline" disabled={isDummy}>
+                <Button
+                  onClick={() => {
+                    window.open(report.interview_recording_url)
+                  }}
+                  variant="outline"
+                  disabled={isDummy}
+                >
                   <Play className="mr-2 h-4 w-4" /> View Recording
                 </Button>
               </span>
