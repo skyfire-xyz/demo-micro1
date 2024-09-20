@@ -101,7 +101,9 @@ export default function InterviewReportCard({
                       <h4 className="font-semibold">
                         {question.question_text}
                       </h4>
-                      <p className="text-sm italic">"{question.answer_text}"</p>
+                      <p className="text-sm italic">
+                        &quot;{question.answer_text}&quot;
+                      </p>
                       <p className="text-sm mt-2">
                         {question.ai_evaluation.feedback}
                       </p>

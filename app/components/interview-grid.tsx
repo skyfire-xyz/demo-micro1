@@ -47,7 +47,9 @@ export default function InterviewGrid() {
           ? interview.interview_language === selectedLanguage
           : true
       const codingMatch = isCoding ? interview.is_coding_round_required : true
-      const reportsMatch = hasReports ? interview.numberOfReports > 0 : true
+      const reportsMatch = hasReports
+        ? interview.numberOfReports && interview.numberOfReports > 0
+        : true
       return keywordMatch && languageMatch && codingMatch && reportsMatch
     })
   }, [interviews, searchTerm, selectedLanguage, isCoding, hasReports])

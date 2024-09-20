@@ -5,7 +5,7 @@
 - "axios"
 - "react-hook-form"
 - "framer-motion"
-- "lodash"
+- "lodash" (also `yarn add @types/lodash`)
 
 ## Shadcn/ui
 
