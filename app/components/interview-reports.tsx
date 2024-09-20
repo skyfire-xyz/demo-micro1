@@ -23,7 +23,9 @@ export default function InterviewReportsCarousel() {
           {reports.map((report) => {
             return (
               <CarouselItem key={report.report_id}>
-                <InterviewReportCard report={report} />
+                <div className="bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground p-6 rounded-lg shadow-lg mb-6">
+                  <InterviewReportCard report={report} />
+                </div>
               </CarouselItem>
             )
           })}

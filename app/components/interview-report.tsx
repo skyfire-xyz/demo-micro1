@@ -36,7 +36,7 @@ export default function InterviewReportCard({
   const isDummy = report.dummy === true
 
   return (
-    <Card className="mb-6">
+    <Card>
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>

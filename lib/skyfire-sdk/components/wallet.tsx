@@ -20,7 +20,7 @@ export function WalletInterface() {
   const { dispatch, logout } = useSkyfire()
 
   return (
-    <Card className="skyfire-theme max-w-full md:max-w-[300px]">
+    <Card className="skyfire-theme max-w-full">
       <CardHeader>
         <CardTitle>{usdAmount(balance?.escrow.available || "0")}</CardTitle>
         <CardDescription>{wallet?.walletAddress}</CardDescription>
