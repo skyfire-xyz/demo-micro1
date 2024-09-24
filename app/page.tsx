@@ -2,7 +2,7 @@ import { LogOut } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 
 import InterviewGrid from "./components/interview-grid"
 import InterviewReports from "./components/interview-reports"
@@ -23,63 +23,86 @@ export default function IndexPage() {
   }
 
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="bg-gradient-to-r from-primary to-primary-foreground text-primary-foreground p-6 rounded-lg shadow-lg mb-6">
-        <h1 className="text-3xl font-bold mb-2">
-          Welcome back, {recruiter.name}!
-        </h1>
-        <p className="text-lg opacity-90">
-          Ready to find your next top talent?
-        </p>
-        <Button
-          variant="outline"
-          className="mt-3 bg-white text-primary hover:bg-primary hover:text-white transition-colors duration-300"
-        >
-          <LogOut className="mr-2 h-4 w-4" /> Logout
-        </Button>
-      </div>
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Company Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <dl className="grid grid-cols-2 gap-2 text-sm">
-              <dt className="font-semibold">Company Name:</dt>
-              <dd>{company.name}</dd>
-              <dt className="font-semibold">Industry:</dt>
-              <dd>{company.industry}</dd>
-              <dt className="font-semibold">Employees:</dt>
-              <dd>{company.employees}</dd>
-              <dt className="font-semibold">Location:</dt>
-              <dd>{company.location}</dd>
-            </dl>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Profile</CardTitle>
-          </CardHeader>
-          <CardContent className="flex items-center space-x-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={recruiter.avatar} alt={recruiter.name} />
-              <AvatarFallback>
-                {recruiter.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")}
-              </AvatarFallback>
-            </Avatar>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-blue-600 text-white w-full py-6 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
             <div>
-              <h3 className="font-semibold">{recruiter.name}</h3>
-              <p className="text-sm text-muted-foreground">{recruiter.role}</p>
-              <p className="text-sm">{recruiter.email}</p>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+                Welcome back, {recruiter.name}!
+              </h1>
+              <p className="text-lg sm:text-xl opacity-90">
+                Ready to find your next top talent?
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-      <InterviewReports />
-      <InterviewGrid />
-    </section>
+            <Button
+              variant="outline"
+              className="mt-4 sm:mt-0 self-start sm:self-auto bg-white text-blue-600 hover:bg-blue-700 hover:text-white transition-colors duration-300"
+            >
+              <LogOut className="mr-2 h-4 w-4" /> Logout
+            </Button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 mt-6">
+            <Card className="bg-white/10 text-white">
+              <CardContent className="pt-6">
+                <h2 className="text-lg font-semibold mb-2">
+                  Company Information
+                </h2>
+                <dl className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <dt className="font-medium">Company:</dt>
+                    <dd>{company.name}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium">Industry:</dt>
+                    <dd>{company.industry}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium">Employees:</dt>
+                    <dd>{company.employees}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium">Location:</dt>
+                    <dd>{company.location}</dd>
+                  </div>
+                </dl>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/10 text-white">
+              <CardContent className="pt-6">
+                <h2 className="text-lg font-semibold mb-2">Your Profile</h2>
+                <div className="flex items-center space-x-4">
+                  <Avatar className="h-16 w-16">
+                    <AvatarImage src={recruiter.avatar} alt={recruiter.name} />
+                    <AvatarFallback className="text-blue-700">
+                      {recruiter.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium">{recruiter.name}</p>
+                    <p className="text-sm opacity-80">{recruiter.role}</p>
+                    <p className="text-sm opacity-80">{recruiter.email}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-grow bg-gray-50">
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <InterviewReports />
+          </div>
+          <div>
+            <InterviewGrid />
+          </div>
+        </section>
+      </main>
+    </div>
   )
 }

@@ -21,7 +21,7 @@ export interface CreateInterviewRequest {
 
 export interface InterviewItem extends CreateInterviewRequest {
   interview_id: string
-  invite_url: string
+  interview_url: string
   date_created: string
   date_modified: string | null
   status: string
@@ -38,7 +38,7 @@ export interface CreateInterviewResponse {
   message: string
   data: {
     interview_id: string
-    invite_url: string
+    interview_url: string
   }
 }
 
@@ -68,7 +68,7 @@ export interface InviteCandidateResponse {
 export interface Invitation {
   candidate_id: string
   candidate_email: string
-  invite_url: string
+  interview_url: string
 }
 
 export interface GetInterviewReportResponse {

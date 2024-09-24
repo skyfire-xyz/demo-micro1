@@ -41,6 +41,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { useMediaQuery } from "../hooks/use-media-query"
 import { languageCodesMap } from "../lang-code"
 import InterviewReportCard from "./interview-report"
 
@@ -52,7 +53,7 @@ interface InterviewCardProps extends InterviewItem {
 
 export default function InterviewCard({
   interview_name,
-  invite_url,
+  interview_url,
   skills,
   interview_language,
   is_proctoring_required,
@@ -61,6 +62,7 @@ export default function InterviewCard({
   interview_id,
   hideDummy,
 }: InterviewCardProps) {
+  const isDesktop = useMediaQuery("(min-width: 768px)")
   const reports = useReports()
   const { sendInvites } = useMicro1()
   const [selectedCandidate, setSelectedCandidate] =
@@ -108,7 +110,7 @@ export default function InterviewCard({
   }
 
   const handleTestInterview = () => {
-    window.open(invite_url, "_blank", "noopener,noreferrer")
+    window.open(interview_url, "_blank", "noopener,noreferrer")
   }
 
   const handlePreviousPage = () => {
@@ -222,7 +224,10 @@ export default function InterviewCard({
                               </DialogTitle>
                             </DialogHeader>
                             {selectedCandidate && (
-                              <InterviewReportCard report={selectedCandidate} />
+                              <InterviewReportCard
+                                report={selectedCandidate}
+                                defaultOpen={isDesktop ? true : false}
+                              />
                             )}
                           </DialogContent>
                         </Dialog>

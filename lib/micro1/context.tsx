@@ -95,7 +95,7 @@ export const Micro1Provider: React.FC<{
           {
             ...interview,
             interview_id: response.data.data.interview_id,
-            invite_url: response.data.data.invite_url,
+            interview_url: response.data.data.interview_url,
             date_created: formatDate(new Date()),
             date_modified: null,
             status: "active",
