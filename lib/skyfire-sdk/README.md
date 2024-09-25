@@ -1,49 +1,20 @@
-# Dependencies
+## Quick Start
 
-## npm
+1. **Clone the repository:**
 
-- "axios"
-- "react-hook-form"
-- "framer-motion"
-- "lodash" (also `yarn add @types/lodash`)
+   ```bash
+   git clone git@github.com:skyfire-xyz/demo-micro1.git
+   ```
 
-## Shadcn/ui
+2. **Install dependencies:**
 
-```
-npx shadcn@latest add popover skeleton toast dialog card form input table tooltip tabs
-```
+   ```bash
+   yarn install
+   ```
 
-Note: Need to fix toasters import path.
+3. **Run the development server:**
+   ```bash
+   yarn dev
+   ```
 
-## Code changes
-
-Update next.config.mjs
-
-```
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  experimental: {
-    appDir: true,
-  },
-  // Add following
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'imagedelivery.net',
-      },
-    ],
-  }
-}
-
-export default nextConfig
-```
-
-Update tailwind.config to include lib folder
-
-```
-...
-content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
-...
-```
+Your Next.js app should now be running on `http://localhost:3000`.
