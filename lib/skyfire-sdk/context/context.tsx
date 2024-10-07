@@ -33,6 +33,7 @@ declare module "axios" {
   export interface AxiosRequestConfig {
     metadata?: {
       title?: string
+      useWithChat?: boolean
     }
   }
 }
@@ -81,7 +82,10 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
     // Response interceptor
     instance.interceptors.response.use(
       async (response) => {
-        if (response.config.url?.includes("proxy")) {
+        if (
+          response.config.url?.includes("proxy") &&
+          response.config.metadata?.useWithChat
+        ) {
           pushResponse(response)
         }
 
