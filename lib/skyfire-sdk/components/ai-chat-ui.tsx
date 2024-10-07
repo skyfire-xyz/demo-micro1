@@ -146,12 +146,13 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
                         {selectedData.includes(url) && (
                           <X
                             className="w-3 h-3 ml-1"
-                            onClick={(e) => {
+                            onClick={(e: Event) => {
                               e.stopPropagation()
                               handleDataToggle(url)
                             }}
                           />
                         )}
+                        e
                       </Badge>
                     )
                   })}
