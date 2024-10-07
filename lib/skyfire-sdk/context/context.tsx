@@ -29,6 +29,16 @@ import {
 import { initialState, skyfireReducer } from "./reducer"
 import { SkyfireState } from "./type"
 
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    metadata?: {
+      requestId?: string
+      timestamp?: string
+      [key: string]: any
+    }
+  }
+}
+
 interface SkyfireContextType {
   state: SkyfireState
   dispatch: React.Dispatch<SkyfireAction>
@@ -36,6 +46,12 @@ interface SkyfireContextType {
   logout: () => void
   pushResponse: (response: AxiosResponse) => void
   getClaimByReferenceID: (referenceId: string | null) => Promise<boolean>
+}
+
+export const getItemNamesFromResponse = (response: AxiosResponse): string => {
+  const config = response.config
+  const title = config.metadata?.title || config.url || "Unknown"
+  return title
 }
 
 const SkyfireContext = createContext<SkyfireContextType | undefined>(undefined)

@@ -38,7 +38,11 @@ export const Micro1Provider: React.FC<{
     if (!client) return
     const fetchInterviews = async () => {
       try {
-        const response = await client.get("/proxy/micro1/interviews")
+        const response = await client.get("/proxy/micro1/interviews", {
+          metadata: {
+            title: "Interview List Data",
+          },
+        })
         setInterviewList(response.data.data)
         setLoading(false)
       } catch (err) {
@@ -50,7 +54,11 @@ export const Micro1Provider: React.FC<{
     const fetchInterviewReports = async () => {
       try {
         // Fetch real reports
-        const response = await client.get(`/proxy/micro1/interview/reports`)
+        const response = await client.get(`/proxy/micro1/interview/reports`, {
+          metadata: {
+            title: "Interview Reports Data",
+          },
+        })
         let reports = response.data.data
 
         // Add dummy reports

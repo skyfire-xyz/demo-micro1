@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { use, useEffect, useRef, useState } from "react"
 import { UseChatHelpers, useChat } from "ai/react"
 import { AxiosResponse } from "axios"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, X } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -15,13 +16,22 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import { useSkyfireAPIKey, useSkyfireResponses } from "../context/context"
-import { useMessageHandler } from "../hooks"
+import {
+  getItemNamesFromResponse,
+  useSkyfireAPIKey,
+  useSkyfireResponses,
+} from "../context/context"
+import { addDatasets } from "../hooks"
 import { MemoizedReactMarkdown } from "./markdown"
 
 interface AIChatPanelProps {
   aiChatProps: UseChatHelpers
 }
+
+const quickPrompts = [
+  "Can you give me the list of interviews?",
+  "Who performed well in those interviews?",
+]
 
 export default function Component({ aiChatProps }: AIChatPanelProps) {
   const {
@@ -31,14 +41,16 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
     handleSubmit,
     setMessages,
     isLoading,
+    setInput,
   } = aiChatProps
 
   const responses = useSkyfireResponses()
-  useMessageHandler(responses, messages, setMessages)
 
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const [showScrollButton, setShowScrollButton] = useState(false)
+  const [showQuickPrompts, setShowQuickPrompts] = useState(true)
+  const [selectedData, setSelectedData] = useState<string[]>([])
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -68,12 +80,38 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
     }
   }, [])
 
+  const handleQuickPrompt = (prompt: string) => {
+    setInput(prompt)
+    setShowQuickPrompts(false)
+  }
+
+  const handleDataToggle = (dataId: string) => {
+    setSelectedData((prev) =>
+      prev.includes(dataId)
+        ? prev.filter((id) => id !== dataId)
+        : [...prev, dataId]
+    )
+  }
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    addDatasets(
+      responses.filter((res: AxiosResponse) =>
+        selectedData.includes(res.config.url || "")
+      ),
+      messages,
+      setMessages
+    )
+
+    handleSubmit(e)
+  }
+
   return (
     <Card
       className="w-full mx-auto flex flex-col h-[calc(100vh-380px)]"
       ref={cardRef}
     >
-      <CardHeader className="flex-shrink-0 h-16">
+      <CardHeader className="flex-shrink-0">
         <CardTitle>AI Agent</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden p-0 relative">
@@ -81,6 +119,46 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
           ref={chatContainerRef}
           className="h-full overflow-y-scroll overflow-x-hidden p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
         >
+          <div className="flex justify-start items-start mb-4">
+            <div className="flex items-start">
+              <Avatar className="w-8 h-8 flex-shrink-0">
+                <AvatarFallback>AI</AvatarFallback>
+                <AvatarImage src="/ai-avatar.png" alt="AI Avatar" />
+              </Avatar>
+              <div className="mx-2 p-3 rounded-lg bg-muted max-w-[calc(100%-50px)]">
+                <p className="mb-2">
+                  Hello! Please select datasets to analyze:
+                </p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {responses.map((response) => {
+                    const url = response.config.url
+                    if (!url) return null
+                    return (
+                      <Badge
+                        key={response.config.url}
+                        variant={
+                          selectedData.includes(url) ? "default" : "outline"
+                        }
+                        className="cursor-pointer"
+                        onClick={() => handleDataToggle(url)}
+                      >
+                        {getItemNamesFromResponse(response)}
+                        {selectedData.includes(url) && (
+                          <X
+                            className="w-3 h-3 ml-1"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDataToggle(url)
+                            }}
+                          />
+                        )}
+                      </Badge>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
           {messages
             .filter((message) => {
               if (
@@ -163,18 +241,34 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
           </Button>
         )}
       </CardContent>
-      <CardFooter className="p-4 flex-shrink-0 h-20">
-        <form onSubmit={handleSubmit} className="flex gap-2 w-full">
-          <input
-            className="flex-grow max-w-md p-2 border rounded bg-white"
-            value={input}
-            placeholder="Say something..."
-            onChange={handleInputChange}
-          />
-          <Button type="submit" disabled={isLoading}>
-            Send
-          </Button>
-        </form>
+      <CardFooter className="p-4 flex-shrink-0">
+        <div className="w-full space-y-4">
+          <form onSubmit={handleFormSubmit} className="flex gap-2 w-full">
+            <input
+              className="flex-grow max-w-md p-2 border rounded bg-white"
+              value={input}
+              placeholder="Ask about the selected datasets..."
+              onChange={handleInputChange}
+            />
+            <Button type="submit" disabled={isLoading}>
+              Send
+            </Button>
+          </form>
+          {selectedData.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {quickPrompts.map((prompt, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleQuickPrompt(prompt)}
+                >
+                  {prompt}
+                </Button>
+              ))}
+            </div>
+          )}
+        </div>
       </CardFooter>
     </Card>
   )

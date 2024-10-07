@@ -82,33 +82,24 @@ export function formatReponseToChatSystemData(
   const originalMessageObj: Message = {
     id: messageId,
     role: "system",
-    content: `Response from ${response.config.url}`,
+    content: `${
+      response.config.metadata?.title || `Response from ${response.config.url}`
+    } attached.`,
   }
 
   const chunkedMessages: Message[] = [
     {
       id: `${messageId}-chunk-0`,
       role: "system",
-      content: `<Chunk>This is the JSON data from the API response ${
+      content: `<Chunk>This is the JSON data from the API "${
+        response.config.metadata?.title || ""
+      }" response ${
         response.config.url
-      }. Please answer my questions based on this data. ${JSON.stringify(
+      }. Please answer my questions based on this data [Data]"${JSON.stringify(
         response.data
-      )}`,
+      )}[/Data]. When you answer the questions, don't use JSON format directly`,
     } as Message,
   ]
-
-  // const chunkedContent = chunkMessages([
-  //   {
-  //     role: "system",
-  //     content: JSON.stringify(response.data),
-  //   } as Message,
-  // ])
-
-  // const chunkedMessages: Message[] = chunkedContent.map((chunk, index) => ({
-  //   id: `claim-${response.config.url}-chunk-${index + 1}`,
-  //   role: "system",
-  //   content: chunk.content,
-  // }))
 
   return [originalMessageObj, ...chunkedMessages]
 }
@@ -116,36 +107,3 @@ export function formatReponseToChatSystemData(
 export function concatenateMessages(messageGroups: Message[][]): Message[] {
   return messageGroups.reduce((acc, group) => acc.concat(group), [])
 }
-
-// const CHUNK_SIZE = 5000 // Adjust this value based on your needs and model limits
-
-// type Role = "system" | "user" | "assistant"
-
-// export function chunkMessages(messages: Message[]): Message[] {
-//   const chunkedMessages: Message[] = []
-
-//   for (const message of messages) {
-//     if (message.content.length > CHUNK_SIZE) {
-//       // If a single message is larger than CHUNK_SIZE, split it
-//       const contentChunks = chunkContent(message.content)
-//       for (const chunk of contentChunks) {
-//         chunkedMessages.push({
-//           role: message.role,
-//           content: `<Chunk> ${chunk}`,
-//         })
-//       }
-//     } else {
-//       chunkedMessages.push(message)
-//     }
-//   }
-
-//   return chunkedMessages
-// }
-
-// function chunkContent(content: string): string[] {
-//   const chunks: string[] = []
-//   for (let i = 0; i < content.length; i += CHUNK_SIZE) {
-//     chunks.push(content.slice(i, i + CHUNK_SIZE))
-//   }
-//   return chunks
-// }
