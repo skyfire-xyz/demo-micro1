@@ -32,13 +32,10 @@ import { SkyfireState } from "./type"
 declare module "axios" {
   export interface AxiosRequestConfig {
     metadata?: {
-      requestId?: string
-      timestamp?: string
-      [key: string]: any
+      title?: string
     }
   }
 }
-
 interface SkyfireContextType {
   state: SkyfireState
   dispatch: React.Dispatch<SkyfireAction>
