@@ -133,8 +133,8 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
               </Avatar>
               <div className="mx-2 p-3 rounded-lg bg-muted max-w-[calc(100%-50px)]">
                 <p className="mb-2">
-                  Welcome to the Micro1 AI Agent. What can I do for you or
-                  select an option below
+                  Welcome to the Micro1 AI Agent. What can I do for you{" "}
+                  {responses.length > 0 ? `or select an option below` : ""}?
                 </p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {responses.map((response) => {
