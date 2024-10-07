@@ -57,6 +57,7 @@ export const Micro1Provider: React.FC<{
         const response = await client.get(`/proxy/micro1/interview/reports`, {
           metadata: {
             title: "Interview Reports Data",
+            useWithChat: true,
           },
         })
         let reports = response.data.data

@@ -30,7 +30,7 @@ interface AIChatPanelProps {
 
 const quickPrompts = [
   "Can you give me the list of interviews?",
-  "Who performed well in those interviews?",
+  "How are my candidate doing?",
 ]
 
 export default function Component({ aiChatProps }: AIChatPanelProps) {
@@ -50,7 +50,9 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [showScrollButton, setShowScrollButton] = useState(false)
   const [showQuickPrompts, setShowQuickPrompts] = useState(true)
-  const [selectedData, setSelectedData] = useState<string[]>([])
+  const [selectedData, setSelectedData] = useState<string[]>(
+    responses.map((res) => res.config.url || "")
+  )
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -79,6 +81,10 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
       return () => chatContainer.removeEventListener("scroll", handleScroll)
     }
   }, [])
+
+  useEffect(() => {
+    setSelectedData(responses.map((res) => res.config.url || ""))
+  }, [responses])
 
   const handleQuickPrompt = (prompt: string) => {
     setInput(prompt)
@@ -127,7 +133,8 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
               </Avatar>
               <div className="mx-2 p-3 rounded-lg bg-muted max-w-[calc(100%-50px)]">
                 <p className="mb-2">
-                  Hello! Please select datasets to analyze:
+                  Welcome to the Micro1 AI Agent. What can I do for you or
+                  select an option below
                 </p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {responses.map((response) => {
@@ -140,10 +147,10 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
                           selectedData.includes(url) ? "default" : "outline"
                         }
                         className="cursor-pointer"
-                        onClick={() => handleDataToggle(url)}
+                        // onClick={() => handleDataToggle(url)}
                       >
                         {getItemNamesFromResponse(response)}
-                        {selectedData.includes(url) && (
+                        {/* {selectedData.includes(url) && (
                           <X
                             className="w-3 h-3 ml-1"
                             onClick={(e: Event) => {
@@ -151,8 +158,7 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
                               handleDataToggle(url)
                             }}
                           />
-                        )}
-                        e
+                        )} */}
                       </Badge>
                     )
                   })}
@@ -244,17 +250,6 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
       </CardContent>
       <CardFooter className="p-4 flex-shrink-0">
         <div className="w-full space-y-4">
-          <form onSubmit={handleFormSubmit} className="flex gap-2 w-full">
-            <input
-              className="flex-grow max-w-md p-2 border rounded bg-white"
-              value={input}
-              placeholder="Ask about the selected datasets..."
-              onChange={handleInputChange}
-            />
-            <Button type="submit" disabled={isLoading}>
-              Send
-            </Button>
-          </form>
           {selectedData.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {quickPrompts.map((prompt, index) => (
@@ -269,6 +264,17 @@ export default function Component({ aiChatProps }: AIChatPanelProps) {
               ))}
             </div>
           )}
+          <form onSubmit={handleFormSubmit} className="flex gap-2 w-full">
+            <input
+              className="flex-grow max-w-md p-2 border rounded bg-white"
+              value={input}
+              placeholder="Ask about the selected datasets..."
+              onChange={handleInputChange}
+            />
+            <Button type="submit" disabled={isLoading}>
+              Send
+            </Button>
+          </form>
         </div>
       </CardFooter>
     </Card>
