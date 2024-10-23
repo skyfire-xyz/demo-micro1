@@ -7,33 +7,41 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
+  useRef,
 } from "react"
 import axios, { AxiosInstance, AxiosResponse, isAxiosError } from "axios"
 
 import {
   SkyfireAction,
   addResponse,
+  clearResponses,
   loading,
+  replaceResponse,
   updateError,
   updateSkyfireAPIKey,
   updateSkyfireClaims,
   updateSkyfireWallet,
+  updateTOSAgreement,
 } from "@/lib/skyfire-sdk/context/action"
 
-import { toast } from "../shadcn/hooks/use-toast"
+import { toast } from "../custom-shadcn/hooks/use-toast"
 import {
   getApiKeyFromLocalStorage,
   removeApiKeyFromLocalStorage,
   usdAmount,
 } from "../util"
 import { initialState, skyfireReducer } from "./reducer"
-import { SkyfireState } from "./type"
+import { PaymentClaim, SkyfireState } from "./type"
 
 declare module "axios" {
   export interface AxiosRequestConfig {
-    metadata?: {
+    metadataForAgent?: {
       title?: string
       useWithChat?: boolean
+      correspondingPageURLs: string[]
+      customizeResponse?: (response: AxiosResponse) => AxiosResponse
+      customPrompts: string[]
+      replaceExisting?: boolean
     }
   }
 }
@@ -43,12 +51,15 @@ interface SkyfireContextType {
   apiClient: AxiosInstance | null
   logout: () => void
   pushResponse: (response: AxiosResponse) => void
+  replaceExistingResponse: (response: AxiosResponse) => void
+  resetResponses: () => void
   getClaimByReferenceID: (referenceId: string | null) => Promise<boolean>
+  fetchAndCompareClaims: () => Promise<void>
 }
 
 export const getItemNamesFromResponse = (response: AxiosResponse): string => {
   const config = response.config
-  const title = config.metadata?.title || config.url || "Unknown"
+  const title = config.metadataForAgent?.title || config.url || "Unknown"
   return title
 }
 
@@ -58,6 +69,7 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(skyfireReducer, initialState)
+  const previousClaimsRef = useRef<PaymentClaim[] | null>(state.claims)
 
   // Create a memoized Axios instance
   const apiClient = useMemo(() => {
@@ -82,11 +94,24 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
     // Response interceptor
     instance.interceptors.response.use(
       async (response) => {
-        if (
-          response.config.url?.includes("proxy") &&
-          response.config.metadata?.useWithChat
-        ) {
-          pushResponse(response)
+        if (response.config.metadataForAgent?.useWithChat) {
+          if (response.config.metadataForAgent?.customizeResponse) {
+            if (response.config.metadataForAgent?.replaceExisting) {
+              replaceExistingResponse(
+                response.config.metadataForAgent?.customizeResponse(response)
+              )
+            } else {
+              pushResponse(
+                response.config.metadataForAgent?.customizeResponse(response)
+              )
+            }
+          } else {
+            if (response.config.metadataForAgent?.replaceExisting) {
+              replaceExistingResponse(response)
+            } else {
+              pushResponse(response)
+            }
+          }
         }
 
         // Can Process Payment Here
@@ -111,6 +136,7 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
         dispatch(loading(false))
         if (error.response && error.response.status === 401) {
           // Handle unauthorized access
+          logout()
         }
         return Promise.reject(error)
       }
@@ -123,6 +149,52 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
     const apiKey = getApiKeyFromLocalStorage()
     dispatch(updateSkyfireAPIKey(apiKey))
   }, [])
+
+  useEffect(() => {
+    const apiKey = getApiKeyFromLocalStorage()
+    dispatch(updateSkyfireAPIKey(apiKey))
+
+    const tosAgreed = localStorage.getItem("tosAgreed")
+    if (tosAgreed !== null) {
+      dispatch(updateTOSAgreement(JSON.parse(tosAgreed)))
+    }
+  }, [])
+
+  const fetchAndCompareClaims = async () => {
+    if (!apiClient) return
+
+    try {
+      const response = await apiClient.get("/v1/wallet/claims")
+      const newClaims = response.data.claims
+
+      const previousClaims = previousClaimsRef.current || []
+
+      if (Array.isArray(newClaims)) {
+        const previousClaimsSet = new Set(
+          previousClaims.map((claim) => claim.id)
+        )
+
+        const spent = newClaims.reduce((acc, claim) => {
+          if (!previousClaimsSet.has(claim.id)) {
+            return acc + Number(claim.value)
+          }
+          return acc
+        }, 0)
+        if (spent > 0) {
+          toast({
+            title: `Spent ${usdAmount(spent)}`,
+            duration: 3000,
+          })
+        }
+        previousClaimsRef.current = newClaims
+      } else {
+        console.error("Unexpected data format for claims:", newClaims)
+      }
+    } catch (error) {
+      console.error("Error fetching claims:", error)
+    }
+    await fetchUserBalance()
+  }
 
   async function fetchUserBalance() {
     if (apiClient) {
@@ -141,6 +213,7 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
     if (apiClient) {
       try {
         const res = await apiClient.get("/v1/wallet/claims")
+        previousClaimsRef.current = res.data.claims
         dispatch(updateSkyfireClaims(res.data))
       } catch (e: unknown) {
         if (isAxiosError(e)) {
@@ -159,14 +232,6 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
       const res = await apiClient.get(
         `v1/wallet/claimByReferenceId/${referenceId}`
       )
-
-      if (res.status < 400) {
-        toast({
-          title: `Spent ${usdAmount(res.data.value)}`,
-          duration: 3000,
-        })
-        return true
-      }
     } catch (error) {
       console.error("Error fetching claim:", error)
     }
@@ -181,6 +246,14 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
 
   function pushResponse(response: AxiosResponse) {
     dispatch(addResponse(response))
+  }
+
+  function replaceExistingResponse(response: AxiosResponse) {
+    dispatch(replaceResponse(response))
+  }
+
+  function resetResponses() {
+    dispatch(clearResponses())
   }
 
   useEffect(() => {
@@ -198,7 +271,10 @@ export const SkyfireProvider: React.FC<{ children: ReactNode }> = ({
         apiClient,
         logout,
         pushResponse,
+        replaceExistingResponse,
+        resetResponses,
         getClaimByReferenceID,
+        fetchAndCompareClaims,
       }}
     >
       {children}
@@ -242,7 +318,43 @@ export const useLoadingState = () => {
   return state?.loading
 }
 
-export const useSkyfireResponses = () => {
+export const useSkyfireResponses = (pathname: string) => {
   const { state } = useSkyfire()
+  if (state?.responses.length > 0) {
+    return filterResponsesByUrl(state?.responses, pathname)
+  }
   return state?.responses
+}
+
+function isUrlMatch(pathname: string, urlPatterns: string[]): boolean {
+  return urlPatterns.some((pattern) => {
+    // Convert the URL pattern to a regex
+    const regexPattern = pattern.replace(/\[.*?\]/g, "[^/]+")
+    const regex = new RegExp(`^${regexPattern}$`)
+    return regex.test(pathname)
+  })
+}
+
+function filterResponsesByUrl(
+  responses: AxiosResponse[],
+  pathname: string
+): AxiosResponse[] {
+  return responses.filter((response) => {
+    const urls = response.config.metadataForAgent?.correspondingPageURLs || []
+    return isUrlMatch(pathname, urls)
+  })
+}
+
+// Add a new hook to easily access and update the TOS agreement state
+export const useSkyfireTOSAgreement = () => {
+  const { state, dispatch } = useSkyfire()
+
+  const setTOSAgreement = (agreed: boolean) => {
+    dispatch(updateTOSAgreement(agreed))
+  }
+
+  return {
+    tosAgreed: state.tosAgreed,
+    setTOSAgreement,
+  }
 }

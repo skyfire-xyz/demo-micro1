@@ -67,43 +67,11 @@ export function usdAmount(usdc: number | string) {
   return "$" + usdAmount.toFixed(7) + " USD"
 }
 
-export function formatReponseToChatSystemData(
-  response: AxiosResponse,
-  existingMessages: Message[]
-): Message[] {
-  const messageId = `claim-${response.config.url}`
-
-  // Check if the message already exists
-  const messageExists = existingMessages.some((msg) => msg.id === messageId)
-  if (messageExists) {
-    return [] // Return an empty array if the message already exists
+export function truncateEthAddress(address: string) {
+  if (!address || address.length < 10) {
+    return address
   }
-
-  const originalMessageObj: Message = {
-    id: messageId,
-    role: "system",
-    content: `${
-      response.config.metadata?.title || `Response from ${response.config.url}`
-    } attached.`,
-  }
-
-  const chunkedMessages: Message[] = [
-    {
-      id: `${messageId}-chunk-0`,
-      role: "system",
-      content: `<Chunk>This is the JSON data from the API "${
-        response.config.metadata?.title || ""
-      }" response ${
-        response.config.url
-      }. Please answer my questions based on this data [Data]"${JSON.stringify(
-        response.data
-      )}[/Data]. When you answer the questions, don't use JSON format directly`,
-    } as Message,
-  ]
-
-  return [originalMessageObj, ...chunkedMessages]
-}
-
-export function concatenateMessages(messageGroups: Message[][]): Message[] {
-  return messageGroups.reduce((acc, group) => acc.concat(group), [])
+  const start = address.slice(0, 4)
+  const end = address.slice(-4)
+  return `${start}...${end}`
 }
