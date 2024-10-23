@@ -39,8 +39,11 @@ export const Micro1Provider: React.FC<{
     const fetchInterviews = async () => {
       try {
         const response = await client.get("/proxy/micro1/interviews", {
-          metadata: {
+          metadataForAgent: {
             title: "Interview List Data",
+            useWithChat: true,
+            correspondingPageURLs: ["/"],
+            customPrompts: ["Can you give me the list of interviews?"],
           },
         })
         setInterviewList(response.data.data)
@@ -55,9 +58,11 @@ export const Micro1Provider: React.FC<{
       try {
         // Fetch real reports
         const response = await client.get(`/proxy/micro1/interview/reports`, {
-          metadata: {
+          metadataForAgent: {
             title: "Interview Reports Data",
             useWithChat: true,
+            correspondingPageURLs: ["/"],
+            customPrompts: ["How are my candidates doing?"],
           },
         })
         let reports = response.data.data
